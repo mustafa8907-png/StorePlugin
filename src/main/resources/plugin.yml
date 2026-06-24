@@ -1,0 +1,9 @@
+name: StorePlugin
+version: '${project.version}'
+main: com.nexussetups.storeplugin.StorePlugin
+api-version: '1.21'
+description: Advanced store announcement and command plugin.
+author: mustafa8907
+commands:
+  store:
+    description: Shows the store address and active events.
