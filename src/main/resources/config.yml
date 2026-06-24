@@ -1,0 +1,33 @@
+# ======================================================
+#                StorePlugin Configuration
+# ======================================================
+
+store-settings:
+  # Channels to send the message (true/false)
+  send-chat: true
+  send-actionbar: false
+  send-bossbar: false
+
+  # Dynamically register aliases from config (Requires Server Restart)
+  command-aliases:
+    - "magaza"
+    - "market"
+
+  # MiniMessage Formatted Messages
+  # <click:open_url:'YOUR_LINK'> is used for the clickable text.
+  chat-message: "<newline><white>Please visit the our Store</white><newline><click:open_url:'https://yourstore.com'><aqua><b>[Click]</b></aqua></click><newline><gray>Buy Rank Cosmetics and more...</gray><newline>"
+  actionbar-message: "<yellow>Don't miss the discount: <green>NEXUS20"
+  bossbar-message: "<aqua><b>Winter Sale Event is Active!</b></aqua>"
+  
+  # Bossbar Customizations
+  # Colors: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  bossbar-color: "GREEN"
+  # Styles: PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+  bossbar-overlay: "PROGRESS"
+  # Bossbar display duration (in seconds)
+  bossbar-duration: 6
+
+  # Sound Settings (Bukkit Sound Enum)
+  sound: "ENTITY_PLAYER_LEVELUP"
+  sound-volume: 1.0
+  sound-pitch: 1.2
