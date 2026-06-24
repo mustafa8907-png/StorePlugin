@@ -22,18 +22,24 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
 
     @Override
     public void onEnable() {
-        // Save default config if it doesn't exist
+        // Create default config
         saveDefaultConfig();
         
-        // Register the main command defined in plugin.yml
+        // Register main command
         if (getCommand("store") != null) {
             getCommand("store").setExecutor(this);
         }
 
-        // Register dynamic aliases from config.yml
+        // Register custom config aliases
         registerDynamicAliases();
         
-        getLogger().info("StorePlugin enabled successfully! (Java 17 - 1.21.x)");
+        // Send Custom Advertisement to Console (Without standard Bukkit logger prefixes)
+        CommandSender console = Bukkit.getConsoleSender();
+        console.sendMessage(Component.text("---N-e-x-u-s-S-e-t-u-p-s---"));
+        console.sendMessage(Component.text("Buy Premium Plugins for"));
+        console.sendMessage(Component.text("mustafa8907.com.tr"));
+        console.sendMessage(Component.text("discord.gg/mustafa8907"));
+        console.sendMessage(Component.text("---N-e-x-u-s-S-e-t-u-p-s---"));
     }
 
     @Override
@@ -55,32 +61,47 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
                     return onCommand(sender, this, commandLabel, args);
                 }
             };
+            // Apply the default permission to aliases as well
+            dynamicCmd.setPermission("storeplugin.use");
+            dynamicCmd.setPermissionMessage("You do not have permission to use this command!");
+            
             Bukkit.getServer().getCommandMap().register("storeplugin", dynamicCmd);
         }
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        // Prevent console execution (Required for UI elements and sounds)
+        // Reload Command Logic (/store reload)
+        if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+            if (!sender.hasPermission("storeplugin.admin")) {
+                sender.sendMessage(miniMessage.deserialize("<red>You do not have permission to reload!</red>"));
+                return true;
+            }
+            reloadConfig();
+            sender.sendMessage(miniMessage.deserialize("<green>StorePlugin configuration reloaded successfully!</green>"));
+            return true;
+        }
+
+        // Check if sender is a player for UI elements
         if (!(sender instanceof Player player)) {
             sender.sendMessage("This command can only be executed by a player.");
             return true;
         }
 
-        // Fetch toggle settings from config
+        // Feature Toggles
         boolean sendChat = getConfig().getBoolean("store-settings.send-chat", true);
         boolean sendActionBar = getConfig().getBoolean("store-settings.send-actionbar", false);
         boolean sendBossBar = getConfig().getBoolean("store-settings.send-bossbar", false);
 
-        // 1. Send Chat Message (MiniMessage Format)
+        // 1. Chat Message (Now supports Multi-line list)
         if (sendChat) {
-            String chatMsg = getConfig().getString("store-settings.chat-message", "");
-            if (!chatMsg.isEmpty()) {
-                player.sendMessage(miniMessage.deserialize(chatMsg));
+            List<String> chatMessages = getConfig().getStringList("store-settings.chat-message");
+            for (String line : chatMessages) {
+                player.sendMessage(miniMessage.deserialize(line));
             }
         }
 
-        // 2. Send Action Bar (MiniMessage Format)
+        // 2. Action Bar
         if (sendActionBar) {
             String actionBarMsg = getConfig().getString("store-settings.actionbar-message", "");
             if (!actionBarMsg.isEmpty()) {
@@ -88,7 +109,7 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
             }
         }
 
-        // 3. Play Sound Effect
+        // 3. Sound Effect
         String soundKey = getConfig().getString("store-settings.sound", "ENTITY_PLAYER_LEVELUP");
         try {
             Sound sound = Sound.valueOf(soundKey.toUpperCase());
@@ -99,7 +120,7 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
             getLogger().warning("Invalid sound defined in config: " + soundKey);
         }
 
-        // 4. Send Boss Bar (Adventure API & BukkitRunnable Scheduler)
+        // 4. Boss Bar
         if (sendBossBar) {
             String bossBarMsg = getConfig().getString("store-settings.bossbar-message", "");
             if (!bossBarMsg.isEmpty()) {
@@ -112,13 +133,9 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
                     BossBar.Overlay overlay = BossBar.Overlay.valueOf(overlayKey.toUpperCase());
                     Component title = miniMessage.deserialize(bossBarMsg);
 
-                    // Create BossBar instance
                     BossBar bossBar = BossBar.bossBar(title, 1.0f, color, overlay);
-                    
-                    // Display BossBar to the player
                     player.showBossBar(bossBar);
 
-                    // Schedule removal task
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -134,4 +151,4 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
 
         return true;
     }
-}
+                }
