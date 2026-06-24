@@ -4,8 +4,19 @@ main: com.nexussetups.storeplugin.StorePlugin
 api-version: '1.21'
 description: Advanced store announcement and command plugin.
 author: mustafa8907
+
 commands:
   store:
     description: Shows the store address and active events.
     permission: storeplugin.use
     permission-message: "<red>You do not have permission to use this command!</red>"
+
+permissions:
+  # Herkese varsayılan olarak verilen genel mağaza izni
+  storeplugin.use:
+    description: Allows using the /store command.
+    default: true
+  # Sadece yetkililerin kullanabileceği reload izni
+  storeplugin.admin:
+    description: Allows reloading the StorePlugin configuration.
+    default: op
