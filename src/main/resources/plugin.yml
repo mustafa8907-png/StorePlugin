@@ -7,3 +7,5 @@ author: mustafa8907
 commands:
   store:
     description: Shows the store address and active events.
+    permission: storeplugin.use
+    permission-message: "<red>You do not have permission to use this command!</red>"
