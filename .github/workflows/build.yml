@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI with Maven Matrix
 
 on:
   push:
@@ -8,25 +8,34 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    
+    # MATRIX STRATEJİSİ: Hem 17 hem 21'i test et
+    strategy:
+      matrix:
+        java: [ '17', '21' ]
+
+    # Matrix'teki değişkene göre job ismini belirler
+    name: Build on Java ${{ matrix.java }}
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: ${{ matrix.java }}
         distribution: 'temurin'
         cache: maven
 
     - name: Build with Maven
       run: mvn clean package --file pom.xml
 
+    # Sadece Java 21 ile başarılı derlenen JAR'ı kaydet (Gereksiz çift dosya olmaması için)
     - name: Upload Artifact
+      if: matrix.java == '21'
       uses: actions/upload-artifact@v4
       with:
-        name: StorePlugin-Jar
+        name: StorePlugin-Jar-Java21
         path: target/*.jar
