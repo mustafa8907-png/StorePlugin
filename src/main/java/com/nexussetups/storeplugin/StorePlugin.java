@@ -151,4 +151,4 @@ public final class StorePlugin extends JavaPlugin implements CommandExecutor {
 
         return true;
     }
-                }
+}
