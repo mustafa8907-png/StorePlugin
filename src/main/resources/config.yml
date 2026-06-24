@@ -13,9 +13,15 @@ store-settings:
     - "magaza"
     - "market"
 
-  # MiniMessage Formatted Messages
+  # MiniMessage Formatted Chat Messages (Multi-line Support)
   # <click:open_url:'YOUR_LINK'> is used for the clickable text.
-  chat-message: "<newline><white>Please visit the our Store</white><newline><click:open_url:'https://yourstore.com'><aqua><b>[Click]</b></aqua></click><newline><gray>Buy Rank Cosmetics and more...</gray><newline>"
+  chat-message:
+    - ""
+    - "<white>Please visit the our Store</white>"
+    - "<click:open_url:'https://mustafa8907.com.tr'><aqua><b>[Click]</b></aqua></click>"
+    - "<gray>Buy Rank Cosmetics and more...</gray>"
+    - ""
+
   actionbar-message: "<yellow>Don't miss the discount: <green>NEXUS20"
   bossbar-message: "<aqua><b>Winter Sale Event is Active!</b></aqua>"
   
