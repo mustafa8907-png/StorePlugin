@@ -17,7 +17,7 @@ store-settings:
   # <click:open_url:'YOUR_LINK'> is used for the clickable text.
   chat-message:
     - ""
-    - "<white>Please visit the our Store</white>"
+    - "<white>Please visit our Store</white>"
     - "<click:open_url:'https://mustafa8907.com.tr'><aqua><b>[Click]</b></aqua></click>"
     - "<gray>Buy Rank Cosmetics and more...</gray>"
     - ""
